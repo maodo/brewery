@@ -583,15 +583,16 @@ echo -e "\n\n"
 APP_BUILDING_RETRIES=3
 APP_WAIT_TIME=1
 APP_FAILED="yes"
+
+if [[ "${BOOT_VERSION}" != "" ]] ; then
+    echo "Will use Boot in version [${BOOT_VERSION}]"
+    PARAMS="${PARAMS} -DBOOT_VERSION=${BOOT_VERSION}"
+fi
 if [[ -z "${SKIP_BUILDING}" ]] ; then
     PARAMS="--no-daemon --refresh-dependencies";
     if [[ "${KAFKA}" == "yes" ]] ; then
         echo "Will use Kafka as a message broker"
         PARAMS="${PARAMS} -Pkafka"
-    fi
-    if [[ "${BOOT_VERSION}" != "" ]] ; then
-        echo "Will use Boot in version [${BOOT_VERSION}]"
-        PARAMS="${PARAMS} -DBOOT_VERSION=${BOOT_VERSION}"
     fi
     for i in $( seq 1 "${APP_BUILDING_RETRIES}" ); do
           ./gradlew clean ${PARAMS} --parallel
@@ -728,7 +729,7 @@ fi
 if [[ "${READY_FOR_TESTS}" == "yes" ]] ; then
     echo -e "\n\nSuccessfully booted up all the apps. Proceeding with the acceptance tests"
     echo -e "\n\nRunning acceptance tests with the following parameters [-DWHAT_TO_TEST=${WHAT_TO_TEST} ${ACCEPTANCE_TEST_OPTS}]"
-    ./gradlew :acceptance-tests:acceptanceTests "-DWHAT_TO_TEST=${WHAT_TO_TEST}" ${ACCEPTANCE_TEST_OPTS} --stacktrace --no-daemon --configure-on-demand && TESTS_PASSED="yes"
+    ./gradlew ${PARAMS} :acceptance-tests:acceptanceTests "-DWHAT_TO_TEST=${WHAT_TO_TEST}" ${ACCEPTANCE_TEST_OPTS} --stacktrace --no-daemon --configure-on-demand && TESTS_PASSED="yes"
 fi
 
 if [[ "${TESTS_PASSED}" == "yes" ]] ; then
