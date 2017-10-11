@@ -142,12 +142,12 @@ configure(subprojects) {
 
     dependencyManagement {
         imports {
-            mavenBom "org.springframework.cloud:spring-cloud-dependencies:$BOM_VERSION"
-            if (hasProperty("BOOT_VERSION")) {
-                println "Using boot in version [${project.property("BOOT_VERSION")}]"
-                mavenBom "org.springframework.boot:spring-boot-dependencies:${project.property("BOOT_VERSION")}"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${getProp("BOM_VERSION")}"
+            if (getProp("BOOT_VERSION")) {
+                println "Using boot in version [${getProp("BOOT_VERSION")}]"
+                mavenBom "org.springframework.boot:spring-boot-dependencies:${getProp("BOOT_VERSION")}"
             }
-            if (ext.whatToTest('SCS')) mavenBom "io.pivotal.spring.cloud:spring-cloud-services-dependencies:$SCS_VERSION"
+            if (ext.whatToTest('SCS')) mavenBom "io.pivotal.spring.cloud:spring-cloud-services-dependencies:${getProp("SCS_VERSION")}"
         }
     }
 
