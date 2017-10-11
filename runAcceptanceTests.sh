@@ -584,12 +584,12 @@ APP_BUILDING_RETRIES=3
 APP_WAIT_TIME=1
 APP_FAILED="yes"
 
+PARAMS="--no-daemon --refresh-dependencies";
 if [[ "${BOOT_VERSION}" != "" ]] ; then
     echo "Will use Boot in version [${BOOT_VERSION}]"
     PARAMS="${PARAMS} -DBOOT_VERSION=${BOOT_VERSION}"
 fi
 if [[ -z "${SKIP_BUILDING}" ]] ; then
-    PARAMS="--no-daemon --refresh-dependencies";
     if [[ "${KAFKA}" == "yes" ]] ; then
         echo "Will use Kafka as a message broker"
         PARAMS="${PARAMS} -Pkafka"

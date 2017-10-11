@@ -232,7 +232,13 @@ configure(subprojects - techProjects - commonZipkinProject - commonZipkinStreamP
             compile "org.springframework.cloud:spring-cloud-starter-zookeeper-discovery"
         }
         if (whatToTest('CONSUL')) { compile "org.springframework.cloud:spring-cloud-starter-consul-discovery" }
-        if (whatToTest('EUREKA') || whatToTest('SLEUTH_STREAM')) { compile "org.springframework.cloud:spring-cloud-starter-${isAtLeastFinchely() ? "netflix-" : ""}eureka" }
+        if (whatToTest('EUREKA') || whatToTest('SLEUTH_STREAM')) {
+            if (isAtLeastFinchely()) {
+                compile "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
+            } else {
+                compile "org.springframework.cloud:spring-cloud-starter-eureka"
+            }
+        }
         compile "org.springframework.cloud:spring-cloud-starter-${isAtLeastFinchely() ? "open" : ""}feign"
         compile "org.codehaus.jackson:jackson-mapper-asl:$jacksonMapper"
         compile "org.codehaus.jackson:jackson-core-asl:$jacksonMapper"
