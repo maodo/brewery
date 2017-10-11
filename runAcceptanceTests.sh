@@ -591,10 +591,10 @@ if [[ -z "${SKIP_BUILDING}" ]] ; then
     fi
     if [[ "${BOOT_VERSION}" != "" ]] ; then
         echo "Will use Boot in version [${BOOT_VERSION}]"
-        PARAMS="${PARAMS} -PBOOT_VERSION=${BOOT_VERSION}"
+        PARAMS="${PARAMS} -DBOOT_VERSION=${BOOT_VERSION}"
     fi
     for i in $( seq 1 "${APP_BUILDING_RETRIES}" ); do
-          ./gradlew clean --parallel
+          ./gradlew clean ${PARAMS} --parallel
           if [[ "${VERBOSE}" == "yes" ]] ; then
             echo -e "\n\nPrinting the dependency tree for all projects\n\n"
             ./gradlew allDeps
